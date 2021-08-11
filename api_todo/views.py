@@ -54,7 +54,7 @@ def home_view(request):
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TodoListCreateConcreteView(generics.ListCreateAPIView):
-    queryset = Todo.objects.all()
+    queryset = Todo.objects.all().order_by("-id")
     serializer_class = TodoSerializer
     pagination_class = SmallPagination
 
