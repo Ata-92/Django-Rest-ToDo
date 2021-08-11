@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.generics import get_object_or_404
+from .pagination import SmallPagination, LargePagination
 
 # Create your views here.
 
@@ -55,6 +56,7 @@ def home_view(request):
 class TodoListCreateConcreteView(generics.ListCreateAPIView):
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
+    pagination_class = SmallPagination
 
 # @api_view(["GET", "PUT", "DELETE"])
 # def tododetail_view(request, pk):
