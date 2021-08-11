@@ -4,7 +4,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.generics import get_object_or_404
 
@@ -39,18 +39,22 @@ def home_view(request):
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TodoListCreateAPIView(APIView):
-    def get(self, request):
-        queryset = Todo.objects.all()
-        serializer = TodoSerializer(queryset, many=True)
-        return Response(serializer.data)
+# class TodoListCreateAPIView(APIView):
+#     def get(self, request):
+#         queryset = Todo.objects.all()
+#         serializer = TodoSerializer(queryset, many=True)
+#         return Response(serializer.data)
 
-    def post(self, request):
-        serializer = TodoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request):
+#         serializer = TodoSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TodoListCreateConcreteView(generics.ListCreateAPIView):
+    queryset = Todo.objects.all()
+    serializer_class = TodoSerializer
 
 # @api_view(["GET", "PUT", "DELETE"])
 # def tododetail_view(request, pk):
@@ -74,25 +78,29 @@ class TodoListCreateAPIView(APIView):
 #         todo.delete()
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class TodoDetailAPIView(APIView):
-    def get_object(self, pk):
-        todo = get_object_or_404(Todo, pk=pk)
-        return todo
+# class TodoDetailAPIView(APIView):
+#     def get_object(self, pk):
+#         todo = get_object_or_404(Todo, pk=pk)
+#         return todo
 
-    def get(self, _, pk):
-        todo = self.get_object(pk=pk)
-        serializer = TodoSerializer(todo)
-        return Response(serializer.data)
+#     def get(self, _, pk):
+#         todo = self.get_object(pk=pk)
+#         serializer = TodoSerializer(todo)
+#         return Response(serializer.data)
 
-    def put(self, request, pk):
-        todo = self.get_object(pk=pk)
-        serializer = TodoSerializer(todo, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def put(self, request, pk):
+#         todo = self.get_object(pk=pk)
+#         serializer = TodoSerializer(todo, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, _, pk):
-        todo = self.get_object(pk=pk)
-        todo.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self, _, pk):
+#         todo = self.get_object(pk=pk)
+#         todo.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class TodoDetailConcreteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Todo.objects.all()
+    serializer_class = TodoSerializer

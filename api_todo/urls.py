@@ -1,4 +1,4 @@
-from api_todo.views import TodoDetailAPIView, TodoListCreateAPIView, home_view
+from api_todo.views import TodoDetailConcreteView, TodoListCreateConcreteView, home_view
 from django.urls import path
 
 urlpatterns = [
@@ -7,6 +7,8 @@ urlpatterns = [
     # path("todocreate/", todocreate_view),
     # path("todolistcreate/", todolistcreate_view),
     # path("tododetail/<int:pk>/", tododetail_view),
-    path("todolistcreateapi/", TodoListCreateAPIView.as_view()),
-    path("tododetailapi/<int:pk>/", TodoDetailAPIView.as_view()),
+    # path("todolistcreateapi/", TodoListCreateAPIView.as_view()),
+    # path("tododetailapi/<int:pk>/", TodoDetailAPIView.as_view()),
+    path("todolistcreateconcreteapi/", TodoListCreateConcreteView.as_view()),
+    path("tododetailconcreteapi/<int:pk>/", TodoDetailConcreteView.as_view()),
 ]
