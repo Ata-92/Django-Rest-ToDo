@@ -54,9 +54,20 @@ def home_view(request):
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TodoListCreateConcreteView(generics.ListCreateAPIView):
-    queryset = Todo.objects.all().order_by("-id")
+    # queryset = Todo.objects.all().order_by("-id")
     serializer_class = TodoSerializer
     pagination_class = SmallPagination
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Todo.objects.all()
+        done = self.request.query_params.get('done')
+        if done:
+            queryset = queryset.filter(done=done)
+        return queryset
 
 # @api_view(["GET", "PUT", "DELETE"])
 # def tododetail_view(request, pk):
